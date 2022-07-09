@@ -21,7 +21,6 @@ export default class Renderer {
 			antialias: true
 		} );
 
-		this._threejs.physicallyCorrectLights = true;
 		this._threejs.toneMapping = THREE.CineonToneMapping;
 		this._threejs.toneMappingExposure = 1.25;
 		this._threejs.shadowMap.enabled = true;

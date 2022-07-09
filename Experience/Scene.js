@@ -28,7 +28,23 @@ export default class Scene {
 		this._scene.background = new THREE.Color( 0xFFFFFF );
 		this._scene.fog = new THREE.FogExp2( 0x89b2eb, 0.002 );
 
-		const hemiLight = new THREE.HemisphereLight( 0xFFFFFF, 0xFFFFFFF, 0.6 );
+		let light = new THREE.DirectionalLight( 0xffeec9, 2.0 );
+		light.position.set( 10, 200, - 100 );
+		light.target.position.set( 0, 0, 0 );
+		light.castShadow = true;
+		light.shadow.bias = - 0.001;
+		light.shadow.mapSize.width = 4096;
+		light.shadow.mapSize.height = 4096;
+		light.shadow.camera.near = 0.1;
+		light.shadow.camera.far = 1000.0;
+		light.shadow.camera.left = 100;
+		light.shadow.camera.right = - 100;
+		light.shadow.camera.top = 100;
+		light.shadow.camera.bottom = - 100;
+		light.power = 5000;
+		this._scene.add( light );
+
+		const hemiLight = new THREE.HemisphereLight( 0xffad66, 0xFFFFFF, .7 );
 		hemiLight.color.setHSL( 0.6, 1, 0.6 );
 		hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
 		this._scene.add( hemiLight );
