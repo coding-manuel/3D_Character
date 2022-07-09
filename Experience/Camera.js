@@ -16,7 +16,7 @@ export default class Camera {
 
 		const fov = 60;
 		const near = 1.0;
-		const far = 1000.0;
+		const far = 10000.0;
 		this._camera = new THREE.PerspectiveCamera( fov, this._sizes._aspect, near, far );
 		this._camera.position.set( 10, 20, 80 );
 

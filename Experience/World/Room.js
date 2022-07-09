@@ -25,10 +25,12 @@ export default class Room {
 		light.shadow.camera.bottom = - 50;
 		light.intensity = 4;
 
-		this._scene.add( light );
 
 		light = new THREE.AmbientLight( 0x404040 );
+
+		light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1 );
 		this._scene.add( light );
+
 
 		const plane = new THREE.Mesh(
 			new THREE.PlaneGeometry( 100, 100, 1, 1 ),
