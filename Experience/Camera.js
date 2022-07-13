@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Experience from "./Experience";
 
 export default class Camera {
@@ -18,6 +19,11 @@ export default class Camera {
 		const near = 1.0;
 		const far = 10000.0;
 		this._camera = new THREE.PerspectiveCamera( fov, this._sizes._aspect, near, far );
+		this._camera.updateProjectionMatrix();
+		const controls = new OrbitControls( this._camera, this._experience._canvas );
+		controls.update();
+
+
 		this._camera.position.set( 10, 20, 80 );
 
 	}

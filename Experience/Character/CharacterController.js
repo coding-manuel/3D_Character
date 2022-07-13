@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
@@ -35,24 +36,106 @@ export default class CharacterController {
 
 	_LoadModels() {
 
-		const loader = new GLTFLoader();
-		loader.load( "./resources/characters/gurl.glb", ( glb ) => {
+		this._manager = new THREE.LoadingManager();
+
+		const loader = new GLTFLoader( this._manager );
+
+		//load Bones
+		loader.load( "./resources/characters/bone.glb", ( glb ) => {
 
 			glb = glb.scene;
-			glb.scale.set( 10, 10, 10 );
-			glb.traverse( ( c ) => {
 
-				c.frustumCulled = false;
-				c.castShadow = true;
+			let skeleton = glb.children[ 0 ].children[ 1 ].skeleton;
+
+			glb.scale.set( 10, 10, 10 );
+
+			glb.traverse( function ( node ) {
+
+				node.frustumCulled = false;
+				node.castShadow = true;
+
+
+			} );
+
+			let loader = new GLTFLoader( this._manager );
+			loader.load( "./resources/characters/Tops/rpm_tshirt.glb", ( glb ) => {
+
+				glb = glb.scene;
+
+				glb.children[ 0 ].children.shift();
+
+				glb.traverse( node => {
+
+					node.frustumCulled = false;
+					node.castShadow = true;
+
+					if ( node.type == "SkinnedMesh" ) {
+
+						node.scale.set( 10, 10, 10 );
+						node.bind( skeleton );
+
+					}
+
+				} );
+
+				this._scene.add( glb );
+
+			} );
+
+			loader.load( "./resources/characters/Bottom/black_jeans_bottom.glb", ( glb ) => {
+
+				glb = glb.scene;
+
+				glb.children[ 0 ].children.shift();
+
+				glb.traverse( node => {
+
+					node.frustumCulled = false;
+					node.castShadow = true;
+
+					if ( node.type == "SkinnedMesh" ) {
+
+						node.scale.set( 10, 10, 10 );
+						node.bind( skeleton );
+
+					}
+
+				} );
+
+				this._scene.add( glb );
+
+			} );
+
+			loader.load( "./resources/characters/FootWear/white_sneakers.glb", ( glb ) => {
+
+				glb = glb.scene;
+
+				glb.children[ 0 ].children.shift();
+
+				glb.traverse( node => {
+
+					node.frustumCulled = false;
+					node.castShadow = true;
+
+					if ( node.type == "SkinnedMesh" ) {
+
+						node.scale.set( 10, 10, 10 );
+						node.bind( skeleton );
+
+					}
+
+				} );
+
+				this._scene.add( glb );
 
 			} );
 
 			this._target = glb;
+
 			this._scene.add( this._target );
 
 			this._mixer = new THREE.AnimationMixer( this._target );
 
-			this._manager = new THREE.LoadingManager();
 			this._manager.onLoad = () => {
 
 				this._stateMachine.SetState( "idle" );
@@ -71,7 +154,7 @@ export default class CharacterController {
 
 			};
 
-			const loader = new FBXLoader( this._manager );
+			loader = new FBXLoader( this._manager );
 			loader.setPath( "./resources/animations/" );
 			loader.load( "idle.fbx", ( a ) => {
 
@@ -93,7 +176,6 @@ export default class CharacterController {
 				_OnLoad( "run", a );
 
 			} );
-			// loader.load('dance.fbx', (a) => { _OnLoad('dance', a)})
 
 		} );
 
@@ -135,8 +217,8 @@ export default class CharacterController {
 		);
 		frameDecceleration.multiplyScalar( timeInSeconds );
 		frameDecceleration.z =
-      Math.sign( frameDecceleration.z ) *
-      Math.min( Math.abs( frameDecceleration.z ), Math.abs( velocity.z ) );
+		  Math.sign( frameDecceleration.z ) *
+		  Math.min( Math.abs( frameDecceleration.z ), Math.abs( velocity.z ) );
 
 		velocity.add( frameDecceleration );
 

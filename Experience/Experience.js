@@ -61,7 +61,7 @@ export default class Experience {
 		this._camera._Update();
 		this._renderer._Update();
 		this._controls._Update(delta);
-		this._thirdPersonCamera.Update(delta);
+		// this._thirdPersonCamera.Update(delta);
 
 	}
 
